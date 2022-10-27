@@ -9,8 +9,8 @@ import (
 	"raspiserver/model"
 )
 
-func logRequest(res http.ResponseWriter, req *http.Request, statusCode int) {
-	log.Printf("[INFO] [%v] %v %v: %v", &res, req.Method, req.URL.Path, statusCode)
+func logRequest(res http.ResponseWriter, req *http.Request, statusCode *int) {
+	log.Printf("[INFO] [%v] %v %v: %v", &res, req.Method, req.URL.Path, *statusCode)
 }
 
 func readBody(req *http.Request) []byte {
@@ -28,7 +28,7 @@ func HandleBuzzer(writer http.ResponseWriter, req *http.Request) {
 	var statusCode = http.StatusOK
 	var message model.Buzzer
 
-	defer logRequest(writer, req, statusCode)
+	defer logRequest(writer, req, &statusCode)
 
 	// Decode payload
 	payload := readBody(req)
