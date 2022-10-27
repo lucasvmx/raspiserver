@@ -45,7 +45,7 @@ func HandleBuzzer(writer http.ResponseWriter, req *http.Request) {
 
 	if statusCode == http.StatusOK {
 		go func() {
-			buzzer.SingleBeep(18, uint(message.TempoSegundos)*1000)
+			buzzer.BeepBuzzer(18, uint(message.TempoSegundos)*1000, uint(message.QuantidadeVezes))
 		}()
 	}
 
