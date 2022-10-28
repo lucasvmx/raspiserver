@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"raspiserver/buzzer"
 	"raspiserver/model"
+	"raspiserver/utils"
 
 	"github.com/gin-gonic/gin"
 )
@@ -48,9 +49,10 @@ func HandleBuzzerRequest(context *gin.Context) {
 		statusCode = http.StatusBadRequest
 	}
 
+	pin := utils.GetConfig().BuzzerIoPin
 	if statusCode == http.StatusOK {
 		go func() {
-			buzzer.BeepBuzzer(18, uint(message.TempoSegundos)/1000, uint(message.QuantidadeVezes))
+			buzzer.BeepBuzzer(pin, uint(message.TempoSegundos)*1000, uint(message.QuantidadeVezes))
 		}()
 	}
 

@@ -50,19 +50,19 @@ func digitalWrite(gpioNumber, level uint) {
 	}
 }
 
-func BeepBuzzer(gpioNumber, timeout, times uint) {
+func BeepBuzzer(gpioNumber, timeoutMilisseconds, times uint) {
 	var v uint
 
 	log.Printf("[INFO] Beeping buzzer %v times ...", times)
 
 	for v = 0; v < times; v++ {
 		digitalWrite(gpioNumber, high)
-		time.Sleep(time.Millisecond * time.Duration(timeout))
+		time.Sleep(time.Millisecond * time.Duration(timeoutMilisseconds))
 		digitalWrite(gpioNumber, low)
-		time.Sleep(time.Millisecond * time.Duration(timeout))
+		time.Sleep(time.Millisecond * time.Duration(timeoutMilisseconds))
 	}
 }
 
-func SingleBeep(gpioNumber, timeout uint) {
-	BeepBuzzer(gpioNumber, timeout, 1)
+func SingleBeep(gpioNumber, timeoutMilisseconds uint) {
+	BeepBuzzer(gpioNumber, timeoutMilisseconds, 1)
 }

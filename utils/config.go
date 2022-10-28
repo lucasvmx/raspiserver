@@ -13,13 +13,13 @@ type RaspiServerSettings struct {
 	BuzzerIoPin uint `json:"buzzer_io_pin"`
 }
 
-var BuzzerConfig *RaspiServerSettings
+var buzzerConfig *RaspiServerSettings
 
 func GetConfig() *RaspiServerSettings {
-	return BuzzerConfig
+	return buzzerConfig
 }
 
-func ReadSettings() (cfg *RaspiServerSettings) {
+func ReadSettings() {
 
 	file, err := os.Open(filename)
 	if err != nil {
@@ -33,7 +33,7 @@ func ReadSettings() (cfg *RaspiServerSettings) {
 		log.Fatalf("[CRITICAL] Failed to read %v: %v", filename, fail)
 	}
 
-	fail = json.Unmarshal(data, &cfg)
+	fail = json.Unmarshal(data, &buzzerConfig)
 	if fail != nil {
 		log.Fatalf("[CRITICAL] Failed to decode settings file: %v", fail)
 	}

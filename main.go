@@ -4,6 +4,7 @@ import (
 	"log"
 	"raspiserver/buzzer"
 	"raspiserver/controller"
+	"raspiserver/utils"
 
 	"github.com/gin-gonic/gin"
 )
@@ -11,7 +12,10 @@ import (
 var engine *gin.Engine
 
 func configure() {
-	buzzer.ConfigureBuzzer(18)
+	utils.ReadSettings()
+	pin := utils.GetConfig().BuzzerIoPin
+	buzzer.ConfigureBuzzer(pin)
+	log.Printf("[INFO] Configured buzzer on pin %v", pin)
 }
 
 func start() {
@@ -24,6 +28,7 @@ func start() {
 
 	// Configures routes
 	engine = gin.New()
+	gin.SetMode(gin.ReleaseMode)
 	engine.POST("/buzzer", controller.HandleBuzzerRequest)
 
 	// Starts web server
