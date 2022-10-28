@@ -2,6 +2,7 @@ package buzzer
 
 import (
 	"fmt"
+	"log"
 	"os/exec"
 	"time"
 )
@@ -21,7 +22,10 @@ func ConfigureBuzzer(gpioNumber uint) {
 		"dh",
 	}...)
 
-	cmd.Run()
+	err := cmd.Run()
+	if err != nil {
+		log.Printf("[ERROR] Failed to configure pin %v", gpioNumber)
+	}
 }
 
 func digitalWrite(gpioNumber, level uint) {
@@ -40,11 +44,16 @@ func digitalWrite(gpioNumber, level uint) {
 		state,
 	}...)
 
-	cmd.Run()
+	err := cmd.Run()
+	if err != nil {
+		log.Printf("[ERROR] Failed to write value to pin: %v", err)
+	}
 }
 
 func BeepBuzzer(gpioNumber, timeout, times uint) {
 	var v uint
+
+	log.Printf("[INFO] Beeping buzzer %v times ...", times)
 
 	for v = 0; v < times; v++ {
 		digitalWrite(gpioNumber, high)

@@ -7,6 +7,8 @@ import (
 	"net/http"
 	"raspiserver/buzzer"
 	"raspiserver/model"
+
+	"github.com/gin-gonic/gin"
 )
 
 func logRequest(res http.ResponseWriter, req *http.Request, statusCode *int) {
@@ -24,9 +26,12 @@ func readBody(req *http.Request) []byte {
 	return data
 }
 
-func HandleBuzzer(writer http.ResponseWriter, req *http.Request) {
+func HandleBuzzerRequest(context *gin.Context) {
 	var statusCode = http.StatusOK
 	var message model.Buzzer
+
+	writer := context.Writer
+	req := context.Request
 
 	defer logRequest(writer, req, &statusCode)
 
@@ -45,7 +50,7 @@ func HandleBuzzer(writer http.ResponseWriter, req *http.Request) {
 
 	if statusCode == http.StatusOK {
 		go func() {
-			buzzer.BeepBuzzer(18, uint(message.TempoSegundos)*1000, uint(message.QuantidadeVezes))
+			buzzer.BeepBuzzer(18, uint(message.TempoSegundos)/1000, uint(message.QuantidadeVezes))
 		}()
 	}
 

@@ -2,12 +2,13 @@ package main
 
 import (
 	"log"
-	"net/http"
 	"raspiserver/buzzer"
 	"raspiserver/controller"
+
+	"github.com/gin-gonic/gin"
 )
 
-var mux *http.ServeMux
+var engine *gin.Engine
 
 func configure() {
 	buzzer.ConfigureBuzzer(18)
@@ -21,10 +22,12 @@ func start() {
 
 	log.Printf("[INFO] Starting http server")
 
+	// Configures routes
+	engine = gin.New()
+	engine.POST("/buzzer", controller.HandleBuzzerRequest)
+
 	// Starts web server
-	mux = http.NewServeMux()
-	mux.HandleFunc("/lampada", controller.HandleBuzzer)
-	http.ListenAndServe("0.0.0.0:2711", mux)
+	engine.Run(":2711")
 }
 
 func stop() {
